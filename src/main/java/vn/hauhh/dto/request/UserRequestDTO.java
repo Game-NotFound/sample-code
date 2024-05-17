@@ -15,7 +15,7 @@ public class UserRequestDTO implements Serializable {
     @NotNull(message = "Last name can not null")
     private String lastName;
 
-    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone nunber")
+    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone number")
     private String phone;
 
     @Email(message = "Email is invalid format")
