@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import vn.hauhh.dto.request.UserRequestDTO;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -61,7 +62,7 @@ public class UserController {
     @GetMapping("/{userID}")
     public UserRequestDTO getUserByID(@PathVariable int userID) {
         System.out.println("Request get user detail by userID = " + userID);
-        return new UserRequestDTO("Game", "Hoang", "phone", "email");
+        return new UserRequestDTO("Game", "Hoang", "phone",  "email");
     }
 
     @GetMapping("/list")
