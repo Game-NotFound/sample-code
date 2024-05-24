@@ -1,0 +1,30 @@
+===============================================================================================================
+cái đoạn @Operation này có nghĩa là mô tả API để cho bên team FE hiểu
+    *  @Operation(summary = "summary", description = "description", responses = {
+            @ApiResponse(responseCode = "201", description = "user added succesfully",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(name = "Example name", summary = "Example summary",
+                                    value = """
+                                               {
+                                               "status": 201,
+                                                "message": "user added succesfully",
+                                                "data": 1
+                                                }
+                                            """
+                            ))
+            )
+    })
+===============================================================================================================
+Có hai cách để viết Mapping
+    Cách 1: PostMapping như bình thường || Ví dụ @PostMapping("/")
+    Cách 2: Define Mapping bằng         || Ví dụ @RequestMapping(): @RequestMapping(method = POST, path = "/")
+===============================================================================================================
+Có 2 cách để dùng PathVariable
+     *   Cách 1: @PathVariable ánh xạ với tham số của URL ở đây là /{userID}
+     *   Cách 2: @PathVariable đặt tên khác nhưng phải ánh xạ đến với tham số của URL
+VD: @PathVariable("userID") int id
+===============================================================================================================
+//Note trong CRUD để cập nhật toàn bộ field thì mình phải dùng PutMapping
+//còn nếu muốn cập nhật một field thì mình phải dùng PatchMapping
+//Nếu mà RequestParam để mặc định vậy thì nó là bắt buộc (required)
+//để kh cần bắt buộc nhập vào thì thêm @RequestParam(required = false)
