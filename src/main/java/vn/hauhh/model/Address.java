@@ -13,12 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Entity(name = "tbl_address")
-public class Address {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long addressID;
+public class Address extends AbstractEntity {
 
     @Column(name = "apartment_number")
     private String apartmentNumber;

@@ -20,11 +20,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity(name = "tbl_user")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractEntity{
 
     @Column(name = "first_name")
     private String firstName;
