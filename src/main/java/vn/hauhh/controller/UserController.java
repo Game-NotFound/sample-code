@@ -1,19 +1,14 @@
 package vn.hauhh.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import vn.hauhh.dto.request.UserRequestDTO;
 import vn.hauhh.dto.respone.ResponseData;
 import vn.hauhh.dto.respone.ResponseError;
-import vn.hauhh.dto.respone.ResponseSuccess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,42 +18,43 @@ import java.util.List;
 public class UserController {
 
     @PostMapping("/")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseData<UserRequestDTO> addUser(@RequestBody UserRequestDTO userDTO) {
-        System.out.println("Requested add user: " + userDTO.getFirstName());
-        //return new ResponseError(HttpStatus.BAD_REQUEST.value(), "can not create user");
-        return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully",
-                new UserRequestDTO("Game", "Hoang", "phone", "email"));
+    public ResponseData<Integer> addUser(@Valid @RequestBody UserRequestDTO user) {
+        System.out.println("Request add user " + user.getFirstName());
+        return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully,", 1);
     }
 
-    @PutMapping("/{userID}")
-    public ResponseData updateUser(@PathVariable @Min(1) int userID, @Valid @RequestBody UserRequestDTO userDTO) {
-        System.out.println("Request update userID: " + userID);//In ra log để kiểm tra userID có được update hay không
+    @PutMapping("/{id}")
+    public ResponseData<?> updateUser(@PathVariable("id") @Min(1) int id, @Valid @RequestBody UserRequestDTO user) {
+        System.out.println("Request update userId=" + id);
         return new ResponseData<>(HttpStatus.ACCEPTED.value(), "User updated successfully");
     }
 
-    @PatchMapping("/{userID}")
-    public ResponseData<?> changeStatus(@Min(1) @PathVariable int userID, @Min(1) @RequestParam(required = false) int status) {
-        System.out.println("Request change user status, userID: " + userID);
-        return new ResponseData(HttpStatus.ACCEPTED.value(), "User status changed successfully");
+    @PatchMapping("/{userId}")
+    public ResponseData<?> updateStatus(@Min(1) @PathVariable int userId, @RequestParam boolean status) {
+        System.out.println("Request change status, userId=" + userId);
+        return new ResponseData<>(HttpStatus.ACCEPTED.value(), "User's status changed successfully");
     }
 
-    @DeleteMapping("/{userID}")
-    public ResponseData<?> deleteuser(@Min(1) @PathVariable int userID) {
-        System.out.println("Request delete userID = " + userID);
-        return new ResponseData(HttpStatus.NO_CONTENT.value(), "User deleted successfully");
+    @DeleteMapping("/{userId}")
+    public ResponseData<?> deleteUser(@PathVariable @Min(value = 1, message = "userId must be greater than 0") int userId) {
+        System.out.println("Request delete userId=" + userId);
+        return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "User deleted successfully");
     }
 
-    @GetMapping("/{userID}")
-    public ResponseData<UserRequestDTO> getUserByID(@PathVariable int userID) {
-        System.out.println("Request get user detail by userID = " + userID);
-        return new ResponseData(HttpStatus.OK.value(), "Get user: ", new UserRequestDTO("Game", "Hoang", "phone", "email"));
+    @GetMapping("/{userId}")
+    public ResponseData<UserRequestDTO> getUser(@PathVariable @Min(1) int userId) {
+        System.out.println("Request get user detail, userId=" + userId);
+        return new ResponseData<>(HttpStatus.OK.value(), "user", new UserRequestDTO("Tay", "Java", "admin@tayjava.vn", "0123456789"));
     }
 
     @GetMapping("/list")
-    public ResponseData<List<UserRequestDTO>> getAllUser() {
-        System.out.println("Request list user");
-        return new ResponseData(HttpStatus.OK.value(), "List user: ", List.of(new UserRequestDTO("Game", "Hoang", "phone", "email"), new UserRequestDTO("Hai Hau", "Hoang", "0886431559", "hhhau1910@gmail.com")));
+    public ResponseData<List<UserRequestDTO>> getAllUser(@RequestParam(defaultValue = "0", required = false) int pageNo,
+                                                           @Min(10) @RequestParam(defaultValue = "20", required = false) int pageSize) {
+        System.out.println("Request get all of users");
+//        return new ResponseData<>(HttpStatus.OK.value(), "users", List.of(new UserRequestDTO("Tay", "Java", "admin@tayjava.vn", "0123456789"),
+//               new UserRequestDTO("Leo", "Messi", "leomessi@email.com", "0123456456")));
+       // return new ResponseEntity<>(new ArrayList<>(), HttpStatus.CREATED);
+        return new ResponseError(HttpStatus.BAD_REQUEST.value(), "All of users failed");
     }
 
 }
